@@ -14,18 +14,18 @@ export async function POST(
 
     const body = await req.json();
     const { label, imageUrl } = body;
-
+    const { storeId } = await params;
     const errors = [];
     if (!label) errors.push("Label is required.");
     if (!imageUrl) errors.push("Image URL is required.");
-    if (!params.storeId) errors.push("Store ID is required.");
+    if (!storeId) errors.push("Store ID is required.");
     if (errors.length > 0) {
       return new NextResponse(JSON.stringify({ errors }), { status: 400 });
     }
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
-        id: params.storeId,
+        id: storeId,
         userId,
       },
     });
@@ -37,7 +37,7 @@ export async function POST(
       data: {
         label,
         imageUrl,
-        storeId: params.storeId,
+        storeId: storeId,
       },
     });
     return NextResponse.json(billboard);
@@ -52,9 +52,10 @@ export async function GET(
   { params }: { params: { storeId: string } }
 ) {
   try {
+    const { storeId } = await params;
     const billboard = await prismadb.billboard.findMany({
       where: {
-        storeId: params.storeId,
+        storeId: storeId,
       },
     });
     return NextResponse.json(billboard);

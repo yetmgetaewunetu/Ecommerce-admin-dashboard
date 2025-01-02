@@ -53,6 +53,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 variant="destructive"
                 size="icon"
                 aria-label="Remove image"
+                disabled={disabled}
               >
                 <Trash className="h-4 w-4" />
               </Button>

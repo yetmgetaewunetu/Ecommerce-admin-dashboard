@@ -34,10 +34,10 @@ interface BillboardFormProps {
   data: Billboard | null;
 }
 
-type SettingFormValues = z.infer<typeof formSchema>;
+type BillboardFormValues = z.infer<typeof formSchema>;
 
 const BillboardForm: React.FC<BillboardFormProps> = ({ data }) => {
-  const form = useForm<SettingFormValues>({
+  const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: data || {
       label: "",
@@ -48,29 +48,22 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();
-
+  const { storeId, billboardId } = params;
   const title = data ? "Edit billboard." : "Create billboard";
   const description = data ? "Edit billboard." : "Add a new billboard";
   const toastMessage = data ? "Billboard updated." : "Billboard created";
   const action = data ? "save changes" : "Create";
 
-  const onSubmit = async (data: SettingFormValues) => {
+  const onSubmit = async (values: BillboardFormValues) => {
     try {
       setLoading(true);
       if (data) {
-        await axios.patch(
-          `/api/${params.storeId}/billboards/${params.billboardId}`,
-          data
-        );
+        console.log("patch from ui");
+        await axios.patch(`/api/${storeId}/billboards/${billboardId}`, values);
       } else {
-        const billboard = await axios.post(
-          `/api/${params.storeId}/billboards`,
-          data
-        );
-        console.log(billboard);
+        await axios.post(`/api/${storeId}/billboards`, values);
       }
-      // const response = await axios.get(`/api/${params.storeId}/billboards`);
-      // console.log(response);
+      router.push(`/${storeId}/billboards`);
       toast.success(toastMessage);
     } catch (error) {
       console.log(error);
@@ -82,12 +75,11 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ data }) => {
   const deleteStore = async () => {
     try {
       setLoading(true);
-      await axios.delete(
-        `/api/${params.storeId}/billboards/${params.billboardId}`
-      );
+      await axios.delete(`/api/${storeId}/billboards/${billboardId}`);
       router.refresh();
       router.push("/");
       toast.success("Billboard deleted");
+      router.push(`/${storeId}/billboards`);
     } catch (error) {
       console.log(error);
       toast.error(
