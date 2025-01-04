@@ -23,6 +23,16 @@ const MainNav = ({ className }: React.HTMLAttributes<HTMLElement>) => {
       active: pathname.startsWith(`/${params.storeId}/categories`),
     },
     {
+      href: `/${params.storeId}/sizes`,
+      label: "Sizes",
+      active: pathname.startsWith(`/${params.storeId}/sizes`),
+    },
+    {
+      href: `/${params.storeId}/colors`,
+      label: "Colors",
+      active: pathname.startsWith(`/${params.storeId}/colors`),
+    },
+    {
       href: `/${params.storeId}/settings`,
       label: "settings",
       active: pathname.startsWith(`/${params.storeId}/settings`),
