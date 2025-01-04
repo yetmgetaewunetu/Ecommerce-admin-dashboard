@@ -10,17 +10,22 @@ const MainNav = ({ className }: React.HTMLAttributes<HTMLElement>) => {
     {
       href: `/${params.storeId}`,
       label: "Overview",
-      active: pathname === `/${params.storeId}`,
+      active: pathname.startsWith(`/${params.storeId}`),
     },
     {
       href: `/${params.storeId}/billboards`,
       label: "Billboards",
-      active: pathname === `/${params.storeId}/billboards`,
+      active: pathname.startsWith(`/${params.storeId}/billboards`),
+    },
+    {
+      href: `/${params.storeId}/categories`,
+      label: "Category",
+      active: pathname.startsWith(`/${params.storeId}/categories`),
     },
     {
       href: `/${params.storeId}/settings`,
       label: "settings",
-      active: pathname === `/${params.storeId}/settings`,
+      active: pathname.startsWith(`/${params.storeId}/settings`),
     },
   ];
   return (
